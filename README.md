@@ -23,7 +23,7 @@
 
 ```bash
 git clone https://github.com/Nek1tt/Raman-Spectrum-Analyzer.git
-cd Roman_spectre
+cd Raman-Spectrum-Analyzer
 docker build -t raman-classifier .
 docker run -p 8080:8080 raman-classifier
 ```
