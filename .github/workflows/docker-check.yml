@@ -1,0 +1,59 @@
+name: Docker Build & Smoke Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  docker-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t raman-classifier .
+
+      - name: Start container
+        run: |
+          docker run -d \
+            --name raman-app \
+            -p 8080:8080 \
+            raman-classifier
+
+      - name: Wait for app to be ready
+        run: |
+          echo "Waiting for the app to start..."
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8080 > /dev/null 2>&1; then
+              echo "App is up after ${i}s"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "App did not respond within 60s"
+          docker logs raman-app
+          exit 1
+
+      - name: Check HTTP response
+        run: |
+          STATUS=$(curl -o /dev/null -s -w "%{http_code}" http://localhost:8080)
+          echo "HTTP status: $STATUS"
+          if [ "$STATUS" -ne 200 ]; then
+            echo "Expected 200, got $STATUS"
+            docker logs raman-app
+            exit 1
+          fi
+          echo "OK: site is reachable"
+
+      - name: Print container logs
+        if: always()
+        run: docker logs raman-app
+
+      - name: Stop and remove container
+        if: always()
+        run: docker rm -f raman-app
