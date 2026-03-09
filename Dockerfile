@@ -8,14 +8,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+
+RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
+RUN pip install --no-cache-dir -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
 
 COPY *.py ./
-
 COPY outputs/ ./outputs/
 
 EXPOSE 8080
-
 ENV PYTHONUNBUFFERED=1
 
 CMD ["python", "app_gradio.py"]
