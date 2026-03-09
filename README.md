@@ -1,15 +1,39 @@
-# 🔬 Raman Spectra Classification — HSP70 Expression Detection
+# 🔬 Raman Spectrum Analyzer — HSP70 Expression Detection
 
-Решение задачи классификации рамановских спектров мозговой ткани для определения экспериментальной группы: **контроль**, **эндогенная экспрессия HSP70**, **экзогенная экспрессия HSP70**.
+![Analyzer](./Raman_analyzer.jpg)
+
+Решение задачи классификации рамановских спектров мозговой ткани для определения экспериментальной группы: **контроль**, **эндогенная экспрессия HSP70**, **экзогенная экспрессия HSP70**. Разработано в рамках хакатона Nuclear IT Hack 2026
 
 Получены на конфокальном рамановском микроскопе **Renishaw inVia Qontor** (два спектральных окна: ~1500 и ~2900 см⁻¹).
 
 ---
 
+## 📄 Материалы
+
+| Тип | Файл |
+|-----|------|
+| 📊 Презентация | [Bang Bang presentation](<./Bang Bang presentation.pdf>) |
+| 📝 Статья | [Bang Bang article](./article_raman_hsp70.pdf) |
+
+---
+
 ## 🚀 Быстрый старт
 
+### Через Docker (рекомендуется)
+
 ```bash
-git clone <repo>
+git clone https://github.com/Nek1tt/Roman_spectre.git
+cd Roman_spectre
+docker build -t raman-classifier .
+docker run -p 8080:8080 raman-classifier
+```
+
+Откройте в браузере: **http://localhost:8080**
+
+### Без Docker
+
+```bash
+git clone https://github.com/Nek1tt/Roman_spectre.git
 cd Roman_spectre
 pip install -r requirements.txt
 python app_gradio.py
@@ -40,6 +64,10 @@ Roman_spectre/
 ├── constants.py           # Общие константы (цвета, диапазоны, пути)
 │
 ├── requirements.txt
+├── Dockerfile
+├── .github/
+│   └── workflows/
+│       └── docker-check.yml   # CI: проверка сборки и запуска Docker
 ├── .gitignore
 ├── README.md
 │
@@ -292,3 +320,20 @@ python main.py \
 | Диск | 10 GB | 5 GB |
 
 > Полный прогон (center1500 + center2900, ML + CNN, Optuna) занял ~7 часов на **RTX 4060 Ti**.
+
+---
+
+## 👥 Команда разработки
+
+- [Абрамов Никита](https://github.com/Nek1tt)
+- [Абдылдаев Нуршат](https://github.com/stakanmoloka)
+- [Ижденева Влада](https://github.com/izhdenevav)
+- [Мартынов Богдан](https://github.com/Hom4ikTop4ik)
+
+---
+
+## 📧 Контакты
+
+- https://t.me/Nek1tJO - Telegram (Абрамов Никита)
+- n.abramov@g.nsu.ru (Абрамов Никита)
+
